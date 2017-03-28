@@ -1,0 +1,12 @@
+Package: RDRPOSTagger
+Type: Package
+Title: Parts of Speech Tagging based on the Ripple Down Rules-based Part-Of-Speech Tagger
+Description: Parts of Speech tagging and morphological tagging based on the Ripple Down Rules-based Part-Of-Speech Tagger (RDRPOS) available at <https://github.com/datquocnguyen/RDRPOSTagger>. Tagging models include Bulgarian, Czech, Dutch, English, French, German, Hindi, Italian, Portuguese, Spanish, Swedish, Thai and Vietnamese. RDRPOSTagger also supports the pre-trained Universal POS tagging models for 40 languages.
+Version: 1.0
+Author: c(person("Jan", "Wijffels", role = c("aut", "cre", "cph"), email = "jwijffels@bnosac.be"), person("BNOSAC", role = "cph"), person("Dat Quoc Nguyen", role = "cph"), person("Dai Quoc Nguyen", role = "cph"), person("Dang Duc Pham", role = "cph"), person("Son Bao Pham", role = "cph"))
+Maintainer: Jan Wijffels <jwijffels@bnosac.be>
+URL: https://github.com/bnosac/RDRPOSTagger
+License: GPL-3
+Depends: rJava
+Imports: tools, data.table
+RoxygenNote: 6.0.1
