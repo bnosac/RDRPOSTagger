@@ -73,9 +73,14 @@ The general architecture and experimental results of RDRPOSTagger can be found i
 Installation can easily be done as follows.
 
 ```
-install.packages("devtools")
 install.packages("rJava")
 install.packages("data.table")
+install.packages("RDRPOSTagger", repos = "http://www.datatailor.be/rcube", type = "source")
+```
+
+Or with devtools
+
+```
 devtools::install_github("bnosac/RDRPOSTagger")
 ```
 
