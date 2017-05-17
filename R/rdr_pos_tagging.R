@@ -230,3 +230,29 @@ rdr_pos_one <- function(object, x, sentence.id){
 trimLeadingTrailing <- function(x){
   gsub("^([[:space:]])+|([[:space:]])+$", "", x)
 }
+
+
+
+
+
+#' @title Add space around punctuations so that it can be used in \code{rdr_pos}
+#' @description Add space around punctuations so that it can be used in \code{rdr_pos}
+#' and points/punctuations are not added to 1 specific word/term.
+#' @param x a character vector
+#' @return the character vector \code{x} where a space is put around punctuations
+#' @export
+#' @examples
+#' x <- c("Dus godvermehoeren met pus in alle puisten, zei die schele van Van Bukburg.Nieuwe zin.", 
+#'   "  ", "", NA)
+#' rdr_add_space_around_punctuations(x)
+rdr_add_space_around_punctuations <- function(x){
+  idx <- which(is.na(x))
+  r <- gregexpr(pattern = "[[:punct:]]", text = x)
+  rm <- regmatches(x, r)
+  regmatches(x, r) <- lapply(rm, FUN=function(x){
+    if(length(x) == 0) return(x)
+    sprintf(" %s ", x)
+  }) 
+  x[idx] <- NA
+  x
+}
