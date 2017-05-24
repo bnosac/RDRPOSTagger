@@ -1,10 +1,10 @@
 # RDRPOSTagger
 
-R package to perform Parts of Speech tagging and morphological tagging based on the Ripple Down Rules-based Part-Of-Speech Tagger (RDRPOS) available at https://github.com/datquocnguyen/RDRPOSTagger. Tagging models include Bulgarian, Czech, Dutch, English, French, German, Hindi, Italian, Portuguese, Spanish, Swedish, Thai and Vietnamese. RDRPOSTagger also supports the pre-trained Universal POS tagging models for 40 languages.
+R package to perform Parts of Speech tagging and morphological tagging based on the Ripple Down Rules-based Part-Of-Speech Tagger (RDRPOS) available at https://github.com/datquocnguyen/RDRPOSTagger. Tagging models include Bulgarian, Czech, Dutch, English, French, German, Hindi, Italian, Portuguese, Spanish, Swedish, Thai and Vietnamese. RDRPOSTagger also supports the pre-trained Universal POS tagging models for 45+ languages.
 
 - **MORPH** annotation for languages: **Bulgarian, Czech, Dutch, French, German, Portuguese, Spanish, Swedish**
 - **POS** annotation for languages: **English, French, German, Hindi, Italian, Thai, Vietnamese**
-- **UniversalPOS** annotation for languages: **Ancient_Greek, Ancient_Greek-PROIEL, Arabic, Basque, Bulgarian, Catalan, Chinese, Croatian, Czech, Czech-CAC, Czech-CLTT, Danish, Dutch, Dutch-LassySmall, English, English-LinES, Estonian, Finnish, Finnish-FTB, French, Galician, German, Gothic, Greek, Hebrew, Hindi, Hungarian, Indonesian, Irish, Italian, Kazakh, Latin, Latin-ITTB, Latin-PROIEL, Latvian, Norwegian, Old_Church_Slavonic, Persian, Polish, Portuguese, Portuguese-BR, Romanian, Russian-SynTagRus, Slovenian, Slovenian-SST, Spanish, Spanish-AnCora, Swedish, Swedish-LinES, Tamil, Turkish**. Prepend the UD_ to the language if you want to used these models.
+- **UniversalPOS** annotation for languages: **Ancient_Greek, Ancient_Greek-PROIEL, Arabic, Basque, Belarusian, Bulgarian, Catalan, Chinese, Coptic, Croatian, Czech, Czech-CAC, Czech-CLTT, Danish, Dutch, Dutch-LassySmall, English, English-LinES, English-ParTUT, Estonian, Finnish, Finnish-FTB, French, French-ParTUT, French-Sequoia, Galician, Galician-TreeGal, German, Gothic, Greek, Hebrew, Hindi, Hungarian, Indonesian, Irish, Italian, Italian-ParTUT, Japanese, Korean, Latin, Latin-ITTB, Latin-PROIEL, Latvian, Lithuanian, Norwegian-Bokmaal, Norwegian-Nynorsk, Old_Church_Slavonic, Persian, Polish, Portuguese, Portuguese-BR, Romanian, Russian, Russian-SynTagRus, Slovak, Slovenian, Slovenian-SST, Spanish, Spanish-AnCora, Swedish, Swedish-LinES, Tamil, Turkish, Urdu, Vietnamese**. Prepend the UD_ to the language if you want to used these models.
 
 ## Examples on Parts of Speech tagging
 
@@ -12,7 +12,10 @@ The following shows how to use the package
 
 ```()
 library(RDRPOSTagger)
-rdr_available_models()
+models <- rdr_available_models()
+models$MORPH$language
+models$POS$language
+models$UniversalPOS$language
 
 x <- c("Oleg Borisovich Kulik is a Ukrainian-born Russian performance artist")
 tagger <- rdr_model(language = "English", annotation = "POS")
@@ -30,33 +33,35 @@ rdr_pos(tagger, x = x)
 
 The output of the POS tagging shows the following elements:
 ```
- sentence.id word.id             word word.type
-           1       1              Dus       ADV
-           1       2   godvermehoeren      VERB
-           1       3              met       ADP
-           1       4              pus      NOUN
-           1       5               in       ADP
-           1       6             alle      PRON
-           1       7         puisten,      NOUN
-           1       8              zei      VERB
-           1       9              die      PRON
-           1      10           schele       ADJ
-           1      11              van       ADP
-           1      12              Van     PROPN
-           1      13         Bukburg.     PROPN
-           2       1               Er       ADV
-           2       2              was       AUX
-           2       3             toen     SCONJ
-           2       4              dat     SCONJ
-           2       5           liedje      NOUN
-           2       6              van       ADP
-           2       7 tietenkonttieten      VERB
-           2       8             kont     PROPN
-           2       9           tieten      VERB
-           2      10     kontkontkont     PROPN
-           3       0             <NA>      <NA>
-           4       0             <NA>      <NA>
-           5       0             <NA>      <NA>
+ doc_id token_id            token   pos
+     d1        1              Dus   ADV
+     d1        2   godvermehoeren  VERB
+     d1        3              met   ADP
+     d1        4              pus  NOUN
+     d1        5               in   ADP
+     d1        6             alle  PRON
+     d1        7          puisten  NOUN
+     d1        8                , PUNCT
+     d1        9              zei  VERB
+     d1       10              die  PRON
+     d1       11           schele   ADJ
+     d1       12              van   ADP
+     d1       13              Van PROPN
+     d1       14          Bukburg PROPN
+     d1       15                . PUNCT
+     d2        1               Er   ADV
+     d2        2              was   AUX
+     d2        3             toen SCONJ
+     d2        4              dat SCONJ
+     d2        5           liedje  NOUN
+     d2        6              van   ADP
+     d2        7 tietenkonttieten  VERB
+     d2        8             kont PROPN
+     d2        9           tieten  VERB
+     d2       10     kontkontkont PROPN
+     d3        0             <NA>  <NA>
+     d4        0             <NA>  <NA>
+     d5        0             <NA>  <NA>
 ```
 
 More information about the model and the tagging can be found at https://github.com/datquocnguyen/RDRPOSTagger

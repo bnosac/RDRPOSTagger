@@ -4,17 +4,21 @@
 \alias{rdr_pos}
 \title{Part-Of-Speech Tagging for tagging sentences based on Ripple Down Rules}
 \usage{
-rdr_pos(object, x, sentence.id = seq_along(x))
+rdr_pos(object, x, doc_id = paste("d", seq_along(x), sep = ""),
+  add_space_around_punctuations = TRUE)
 }
 \arguments{
 \item{object}{And object of class RDRPOSTagger as returned by \code{\link{rdr_model}}}
 
 \item{x}{a character vector in UTF-8 encoding where each element of the character vector contains only 1 sentence which you like to tag.}
 
-\item{sentence.id}{an identifier of a sentence with the same length as \code{x}}
+\item{doc_id}{an identifier of a document with the same length as \code{x}.}
+
+\item{add_space_around_punctuations}{logical indicating to add a space around punctuations before doing the RDR tagging. Defaults
+to TRUE as the RDRPOStagger requires this.}
 }
 \value{
-a data frame with fields sentence.id, word.id, word, word.type where the word.type is the Parts of Speech tag
+a data frame with fields doc_id, token_id, token, pos where the pos field is the Parts of Speech tag
 }
 \description{
 Part-Of-Speech Tagging for tagging sentences based on Ripple Down Rules

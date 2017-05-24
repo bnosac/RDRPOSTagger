@@ -7,7 +7,7 @@
 #' @name RDRPOSTagger
 #' @import rJava
 #' @importFrom tools file_path_sans_ext
-#' @importFrom data.table data.table rbindlist setDT setDF setcolorder
+#' @importFrom data.table data.table rbindlist setDT setDF setcolorder setnames
 #' @seealso \code{\link{rdr_pos}}, \code{\link{rdr_model}}
 NULL
 

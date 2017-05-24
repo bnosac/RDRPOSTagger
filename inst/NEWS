@@ -1,0 +1,10 @@
+Package: RDRPOSTagger
+================
+
+Version: 1.1 [2017-05-24]
+- Updated models based on UD v2.0 (commit 14be0e413ab3df688b8e81784172bdb56e369232)
+- rdr_pos now by default adds spaces around punctuations
+- rdr_pos now spits out a data.frame with fields: doc_id, token_id, token, pos to comply with the 'text interchange format'
+
+Version: 1.0 [2017-03-28]
+- Initial package version

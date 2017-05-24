@@ -16,7 +16,7 @@ These current consists of language models for
 \itemize{
  \item{MORPH: }{detailed morphological tagging for languages}
  \item{POS: }{basic parts of speech tagging for languages}
- \item{UniversalPOS: }{universal POS tagging for languages. Based on data from http://universaldependencies.org version 1.3}
+ \item{UniversalPOS: }{universal POS tagging for languages. Based on data from http://universaldependencies.org version 2.0}
 }
 }
 \examples{
