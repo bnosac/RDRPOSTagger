@@ -2,7 +2,7 @@
 
 R package to perform Parts of Speech tagging and morphological tagging based on the Ripple Down Rules-based Part-Of-Speech Tagger (RDRPOS) available at https://github.com/datquocnguyen/RDRPOSTagger. RDRPOSTagger supports pre-trained POS tagging models for 45 languages.
 
-The R package allows you to peform 3 types of tagging. 
+The R package allows you to perform 3 types of tagging. 
 
 - **UniversalPOS** annotation where a reduced Part of Speech and globally used tagset which is consistent across languages is used to assign words with a certain label. This type of tagging is available for the following languages: **Ancient_Greek, Ancient_Greek-PROIEL, Arabic, Basque, Belarusian, Bulgarian, Catalan, Chinese, Coptic, Croatian, Czech, Czech-CAC, Czech-CLTT, Danish, Dutch, Dutch-LassySmall, English, English-LinES, English-ParTUT, Estonian, Finnish, Finnish-FTB, French, French-ParTUT, French-Sequoia, Galician, Galician-TreeGal, German, Gothic, Greek, Hebrew, Hindi, Hungarian, Indonesian, Irish, Italian, Italian-ParTUT, Japanese, Korean, Latin, Latin-ITTB, Latin-PROIEL, Latvian, Lithuanian, Norwegian-Bokmaal, Norwegian-Nynorsk, Old_Church_Slavonic, Persian, Polish, Portuguese, Portuguese-BR, Romanian, Russian, Russian-SynTagRus, Slovak, Slovenian, Slovenian-SST, Spanish, Spanish-AnCora, Swedish, Swedish-LinES, Tamil, Turkish, Urdu, Vietnamese**. 
 - **POS** for doing Parts of Speech annotation based on an extended language/treebank-specific POS tagset. for This type of tagging is available for the following languages: **English, French, German, Hindi, Italian, Thai, Vietnamese**
@@ -90,7 +90,7 @@ install.packages("RDRPOSTagger", repos = "http://www.datatailor.be/rcube", type 
 Or with devtools
 
 ```
-devtools::install_github("bnosac/RDRPOSTagger")
+devtools::install_github("bnosac/RDRPOSTagger", build_vignettes = TRUE)
 ```
 
 ## License

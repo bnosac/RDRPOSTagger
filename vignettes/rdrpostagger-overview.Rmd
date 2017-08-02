@@ -31,7 +31,7 @@ Parts of Speech (POS) tagging is the process of assigning a category (like verb/
 
 ## Types of tagging/languages
 
-The R package allows you to peform 3 types of tagging. 
+The R package allows you to perform 3 types of tagging. 
 
 - **UniversalPOS** annotation where a reduced Part of Speech and globally used tagset which is consistent across languages is used to assign words with a certain label. This type of tagging is available for the following languages: **Ancient_Greek, Ancient_Greek-PROIEL, Arabic, Basque, Belarusian, Bulgarian, Catalan, Chinese, Coptic, Croatian, Czech, Czech-CAC, Czech-CLTT, Danish, Dutch, Dutch-LassySmall, English, English-LinES, English-ParTUT, Estonian, Finnish, Finnish-FTB, French, French-ParTUT, French-Sequoia, Galician, Galician-TreeGal, German, Gothic, Greek, Hebrew, Hindi, Hungarian, Indonesian, Irish, Italian, Italian-ParTUT, Japanese, Korean, Latin, Latin-ITTB, Latin-PROIEL, Latvian, Lithuanian, Norwegian-Bokmaal, Norwegian-Nynorsk, Old_Church_Slavonic, Persian, Polish, Portuguese, Portuguese-BR, Romanian, Russian, Russian-SynTagRus, Slovak, Slovenian, Slovenian-SST, Spanish, Spanish-AnCora, Swedish, Swedish-LinES, Tamil, Turkish, Urdu, Vietnamese**. 
 
