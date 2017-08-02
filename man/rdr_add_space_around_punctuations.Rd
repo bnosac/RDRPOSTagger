@@ -4,10 +4,12 @@
 \alias{rdr_add_space_around_punctuations}
 \title{Add space around punctuations so that it can be used in \code{rdr_pos}}
 \usage{
-rdr_add_space_around_punctuations(x)
+rdr_add_space_around_punctuations(x, symbols = "[!,-.:;?]")
 }
 \arguments{
 \item{x}{a character vector}
+
+\item{symbols}{a character class of regular expressions to be used to identify punctuation symbols}
 }
 \value{
 the character vector \code{x} where a space is put around punctuations

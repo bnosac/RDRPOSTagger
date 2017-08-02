@@ -1,10 +1,14 @@
 # RDRPOSTagger
 
-R package to perform Parts of Speech tagging and morphological tagging based on the Ripple Down Rules-based Part-Of-Speech Tagger (RDRPOS) available at https://github.com/datquocnguyen/RDRPOSTagger. Tagging models include Bulgarian, Czech, Dutch, English, French, German, Hindi, Italian, Portuguese, Spanish, Swedish, Thai and Vietnamese. RDRPOSTagger also supports the pre-trained Universal POS tagging models for 45+ languages.
+R package to perform Parts of Speech tagging and morphological tagging based on the Ripple Down Rules-based Part-Of-Speech Tagger (RDRPOS) available at https://github.com/datquocnguyen/RDRPOSTagger. RDRPOSTagger supports pre-trained POS tagging models for 45 languages.
 
-- **MORPH** annotation for languages: **Bulgarian, Czech, Dutch, French, German, Portuguese, Spanish, Swedish**
-- **POS** annotation for languages: **English, French, German, Hindi, Italian, Thai, Vietnamese**
-- **UniversalPOS** annotation for languages: **Ancient_Greek, Ancient_Greek-PROIEL, Arabic, Basque, Belarusian, Bulgarian, Catalan, Chinese, Coptic, Croatian, Czech, Czech-CAC, Czech-CLTT, Danish, Dutch, Dutch-LassySmall, English, English-LinES, English-ParTUT, Estonian, Finnish, Finnish-FTB, French, French-ParTUT, French-Sequoia, Galician, Galician-TreeGal, German, Gothic, Greek, Hebrew, Hindi, Hungarian, Indonesian, Irish, Italian, Italian-ParTUT, Japanese, Korean, Latin, Latin-ITTB, Latin-PROIEL, Latvian, Lithuanian, Norwegian-Bokmaal, Norwegian-Nynorsk, Old_Church_Slavonic, Persian, Polish, Portuguese, Portuguese-BR, Romanian, Russian, Russian-SynTagRus, Slovak, Slovenian, Slovenian-SST, Spanish, Spanish-AnCora, Swedish, Swedish-LinES, Tamil, Turkish, Urdu, Vietnamese**. Prepend the UD_ to the language if you want to used these models.
+The R package allows you to peform 3 types of tagging. 
+
+- **UniversalPOS** annotation where a reduced Part of Speech and globally used tagset which is consistent across languages is used to assign words with a certain label. This type of tagging is available for the following languages: **Ancient_Greek, Ancient_Greek-PROIEL, Arabic, Basque, Belarusian, Bulgarian, Catalan, Chinese, Coptic, Croatian, Czech, Czech-CAC, Czech-CLTT, Danish, Dutch, Dutch-LassySmall, English, English-LinES, English-ParTUT, Estonian, Finnish, Finnish-FTB, French, French-ParTUT, French-Sequoia, Galician, Galician-TreeGal, German, Gothic, Greek, Hebrew, Hindi, Hungarian, Indonesian, Irish, Italian, Italian-ParTUT, Japanese, Korean, Latin, Latin-ITTB, Latin-PROIEL, Latvian, Lithuanian, Norwegian-Bokmaal, Norwegian-Nynorsk, Old_Church_Slavonic, Persian, Polish, Portuguese, Portuguese-BR, Romanian, Russian, Russian-SynTagRus, Slovak, Slovenian, Slovenian-SST, Spanish, Spanish-AnCora, Swedish, Swedish-LinES, Tamil, Turkish, Urdu, Vietnamese**. 
+- **POS** for doing Parts of Speech annotation based on an extended language/treebank-specific POS tagset. for This type of tagging is available for the following languages: **English, French, German, Hindi, Italian, Thai, Vietnamese**
+- **MORPH** with very detailed morphological annotation. This type of tagging is available for the following languages: **Bulgarian, Czech, Dutch, French, German, Portuguese, Spanish, Swedish**
+
+This is based on corpusses collected and made available at http://universaldependencies.org.
 
 ## Examples on Parts of Speech tagging
 
@@ -27,7 +31,7 @@ x <- c("Dus godvermehoeren met pus in alle puisten, zei die schele van Van Bukbu
 tagger <- rdr_model(language = "Dutch", annotation = "MORPH")
 rdr_pos(tagger, x = x)
 
-tagger <- rdr_model(language = "UD_Dutch", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Dutch", annotation = "UniversalPOS")
 rdr_pos(tagger, x = x)
 ```
 

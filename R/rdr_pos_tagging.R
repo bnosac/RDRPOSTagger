@@ -19,26 +19,134 @@
 #' models$UniversalPOS$language
 rdr_available_models <- function(){
   available <- list()
-  available$MORPH <- file_path_sans_ext(list.files(system.file("Models", "MORPH", package = "RDRPOSTagger"), pattern = ".DICT$|.RDR$"))
-  available$POS <- file_path_sans_ext(list.files(system.file("Models", "POS", package = "RDRPOSTagger"), pattern = ".DICT$|.RDR$"))
-  available$UniversalPOS <- file_path_sans_ext(list.files(system.file("Models", "UniPOS", package = "RDRPOSTagger")))
-  available$UniversalPOS <- setdiff(available$UniversalPOS, c("Readme", "UDv1.3_results"))
-  available <- lapply(available, unique)
-  available$MORPH <- data.frame(language = available$MORPH,
-                                dictionary = system.file("Models", "MORPH", sprintf("%s.DICT", available$MORPH), package = "RDRPOSTagger"),
-                                rules = system.file("Models", "MORPH", sprintf("%s.RDR", available$MORPH), package = "RDRPOSTagger"),
-                                stringsAsFactors = FALSE)
-  available$POS <- data.frame(language = available$POS,
-                              dictionary = system.file("Models", "POS", sprintf("%s.DICT", available$POS), package = "RDRPOSTagger"),
-                              rules = system.file("Models", "POS", sprintf("%s.RDR", available$POS), package = "RDRPOSTagger"),
-                              stringsAsFactors = FALSE)
-  available$UniversalPOS <- data.frame(language = available$UniversalPOS,
-                                       dictionary = sapply(available$UniversalPOS, FUN=function(loc) list.files(system.file("Models", "UniPOS", loc, package = "RDRPOSTagger"), pattern = "\\.DICT$", full.names=TRUE)),
-                                       rules = sapply(available$UniversalPOS, FUN=function(loc) list.files(system.file("Models", "UniPOS", loc, package = "RDRPOSTagger"), pattern = "\\.RDR$", full.names=TRUE)),
-                                       stringsAsFactors = FALSE)
+  available$MORPH$language <- list.files(system.file("Models", "MORPH", package = "RDRPOSTagger"), pattern = ".zip$", full.names = TRUE)
+  available$POS$language <- list.files(system.file("Models", "POS", package = "RDRPOSTagger"), pattern = ".zip$", full.names = TRUE)
+  available$UniversalPOS$language <- list.files(system.file("Models", "UniversalPOS", package = "RDRPOSTagger"), pattern = ".zip$", full.names = TRUE)
+  
+  x <- lapply(available$MORPH$language, FUN=function(f) unzip(f, list = TRUE)$Name)
+  available$MORPH$dictionary <- sapply(x, FUN=function(f) file.path(system.file("Models", "MORPH", package = "RDRPOSTagger"), grep(".DICT$", f, value = TRUE)))
+  available$MORPH$rules <- sapply(x, FUN=function(f) file.path(system.file("Models", "MORPH", package = "RDRPOSTagger"), grep(".RDR$", f, value = TRUE)))
+  x <- lapply(available$POS$language, FUN=function(f) unzip(f, list = TRUE)$Name)
+  available$POS$dictionary <- sapply(x, FUN=function(f) file.path(system.file("Models", "POS", package = "RDRPOSTagger"), grep(".DICT$", f, value = TRUE)))
+  available$POS$rules <- sapply(x, FUN=function(f) file.path(system.file("Models", "POS", package = "RDRPOSTagger"), grep(".RDR$", f, value = TRUE)))
+  x <- lapply(available$UniversalPOS$language, FUN=function(f) unzip(f, list = TRUE)$Name)
+  available$UniversalPOS$dictionary <- mapply(file_path_sans_ext(basename(available$UniversalPOS$language)), x, FUN=function(language, f) file.path(system.file("Models", "UniversalPOS", package = "RDRPOSTagger"), language, grep(".DICT$", f, value = TRUE)), USE.NAMES = FALSE)
+  available$UniversalPOS$rules <- mapply(file_path_sans_ext(basename(available$UniversalPOS$language)), x, FUN=function(language, f) file.path(system.file("Models", "UniversalPOS", package = "RDRPOSTagger"), language, grep(".RDR$", f, value = TRUE)), USE.NAMES = FALSE)
+  available$MORPH$language <- file_path_sans_ext(basename(available$MORPH$language))
+  available$POS$language <- file_path_sans_ext(basename(available$POS$language))
+  available$UniversalPOS$language <- file_path_sans_ext(basename(available$UniversalPOS$language))
+  
+  available <- lapply(available, as.data.frame, stringsAsFactors = FALSE)
+  class(available) <- "rdr_models"
   available
 }
 
+
+rdr_unzipped_models <- function(){
+  default <- data.frame(language = character(),
+                        dictionary = character(),
+                        rules = character(),
+                        stringsAsFactors = FALSE)
+  available <- list()
+  available$MORPH <- file_path_sans_ext(list.files(system.file("Models", "MORPH", package = "RDRPOSTagger"), pattern = ".DICT$|.RDR$"))
+  available$POS <- file_path_sans_ext(list.files(system.file("Models", "POS", package = "RDRPOSTagger"), pattern = ".DICT$|.RDR$"))
+  available$UniversalPOS <- file_path_sans_ext(list.files(system.file("Models", "UniversalPOS", package = "RDRPOSTagger")))
+  available$UniversalPOS <- unique(available$UniversalPOS)
+  available$UniversalPOS <- available$UniversalPOS[dir.exists(file.path(system.file("Models", "UniversalPOS", package = "RDRPOSTagger"), available$UniversalPOS))]
+  available$UniversalPOS <- setdiff(available$UniversalPOS, c("Readme", "UDv1.3_results"))
+  available <- lapply(available, unique)
+  if(length(available$MORPH) > 0){
+    available$MORPH <- data.frame(language = available$MORPH,
+                                  dictionary = system.file("Models", "MORPH", sprintf("%s.DICT", available$MORPH), package = "RDRPOSTagger"),
+                                  rules = system.file("Models", "MORPH", sprintf("%s.RDR", available$MORPH), package = "RDRPOSTagger"),
+                                  stringsAsFactors = FALSE)  
+  }else{
+    available$MORPH <- default
+  }
+  if(length(available$POS) > 0){
+    available$POS <- data.frame(language = available$POS,
+                                dictionary = system.file("Models", "POS", sprintf("%s.DICT", available$POS), package = "RDRPOSTagger"),
+                                rules = system.file("Models", "POS", sprintf("%s.RDR", available$POS), package = "RDRPOSTagger"),
+                                stringsAsFactors = FALSE)
+  }else{
+    available$POS <- default
+  }
+  if(length(available$UniversalPOS) > 0){
+    available$UniversalPOS <- data.frame(language = available$UniversalPOS,
+                                         dictionary = sapply(available$UniversalPOS, FUN=function(loc) list.files(system.file("Models", "UniversalPOS", loc, package = "RDRPOSTagger"), pattern = "\\.DICT$", full.names=TRUE)),
+                                         rules = sapply(available$UniversalPOS, FUN=function(loc) list.files(system.file("Models", "UniversalPOS", loc, package = "RDRPOSTagger"), pattern = "\\.RDR$", full.names=TRUE)),
+                                         stringsAsFactors = FALSE)
+  }else{
+    available$UniversalPOS <- default
+  }
+  class(available) <- "rdr_models"
+  available
+}
+
+
+
+rdr_unzip <- function(language, annotation){
+  zipfile <- file.path(system.file("Models", annotation, sprintf("%s.zip", language), package = "RDRPOSTagger"))
+  if(!file.exists(zipfile)){
+    stop(sprintf("Language %s not part of the possible languages for annotation %s. Run rdr_available_models() to see the available language/annotation models.", language, annotation))
+  }
+  existing <- rdr_unzipped_models()
+  existing <- existing[[annotation]]$language
+  existsalready <- language %in% existing
+  if(annotation %in% c("MORPH", "POS")){
+    storeat <- dirname(zipfile)
+  }else if(annotation %in% "UniversalPOS"){
+    storeat <- file.path(dirname(zipfile), file_path_sans_ext(basename(zipfile)))
+  } 
+  if(!existsalready){
+    if(!dir.exists(storeat)){
+      dir.create(storeat)  
+    }
+    unzip(zipfile = zipfile, exdir = storeat)
+  }
+}
+
+# rdr_read_file <- function(file){
+#   readLines(file, encoding = "UTF-8")
+#   x <- list.files(system.file(package = "RDRPOSTagger"), recursive = TRUE, full.names = TRUE, pattern = ".DICT|.RDR")
+#   x <- lapply(x, FUN = function(file) readLines(file, encoding = "UTF-8"))
+#   save(x, file = "test.RData", compress = "xz")
+# }
+# rdr_init <- function(){
+#   modelszip <- system.file("Models.zip", package = "RDRPOSTagger")
+#   modelsfolder <- system.file(package = "RDRPOSTagger")
+#   unzip(m, overwrite = TRUE, exdir = system.file(package = "RDRPOSTagger"))
+# }
+
+
+
+#' @export
+print.rdr_models <- function(x, ...){
+  cat('Riple down Rule based available taggers:', sep = "\n")
+  cat('----------------------------------------', sep = "\n")
+  
+  cat("\n", sep = "")
+  cat('1/ POS tagging for languages:', sep = "\n\n")
+  if(length(x$POS$language) > 0){
+    cat(paste(x$POS$language, collapse = ", "), sep = "\n")
+  }else{
+    cat("No languages for this type of POS tagging")
+  }
+  cat("\n", sep = "")
+  cat('2/ MORPH tagging for languages:', sep = "\n\n")
+  if(length(x$MORPH$language) > 0){
+    cat(paste(x$MORPH$language, collapse = ", "), sep = "\n")
+  }else{
+    cat("No languages for this type of POS tagging")
+  }
+  cat("\n", sep = "")
+  cat('3/ UniversalPOS tagging for languages:', sep = "\n")
+  if(length(x$UniversalPOS$language) > 0){
+    cat(paste(x$UniversalPOS$language, collapse = ", "), sep = "\n")
+  }else{
+    cat("No languages for this type of POS tagging")
+  }
+}
 
 #' @title Set up a Ripple Down Rules-based Part-Of-Speech Tagger for tagging sentences
 #' @description Set up a Ripple Down Rules-based Part-Of-Speech Tagger for tagging sentences
@@ -46,25 +154,25 @@ rdr_available_models <- function(){
 #' \itemize{
 #'  \item{MORPH: }{Bulgarian, Czech, Dutch, French, German, Portuguese, Spanish, Swedish}
 #'  \item{POS: }{English, French, German, Hindi, Italian, Thai, Vietnamese}
-#'  \item{UniversalPOS: }{UD_Ancient_Greek, UD_Ancient_Greek-PROIEL, UD_Arabic, UD_Basque, UD_Belarusian, 
-#'  UD_Bulgarian, UD_Catalan, UD_Chinese, UD_Coptic, UD_Croatian, UD_Czech, UD_Czech-CAC, UD_Czech-CLTT, 
-#'  UD_Danish, UD_Dutch, UD_Dutch-LassySmall, UD_English, UD_English-LinES, UD_English-ParTUT, UD_Estonian, 
-#'  UD_Finnish, UD_Finnish-FTB, UD_French, UD_French-ParTUT, UD_French-Sequoia, UD_Galician, UD_Galician-TreeGal, 
-#'  UD_German, UD_Gothic, UD_Greek, UD_Hebrew, UD_Hindi, UD_Hungarian, UD_Indonesian, UD_Irish, UD_Italian, 
-#'  UD_Italian-ParTUT, UD_Japanese, UD_Korean, UD_Latin, UD_Latin-ITTB, UD_Latin-PROIEL, UD_Latvian, UD_Lithuanian, 
-#'  UD_Norwegian-Bokmaal, UD_Norwegian-Nynorsk, UD_Old_Church_Slavonic, UD_Persian, UD_Polish, UD_Portuguese, 
-#'  UD_Portuguese-BR, UD_Romanian, UD_Russian, UD_Russian-SynTagRus, UD_Slovak, UD_Slovenian, UD_Slovenian-SST, 
-#'  UD_Spanish, UD_Spanish-AnCora, UD_Swedish, UD_Swedish-LinES, UD_Tamil, UD_Turkish, UD_Urdu, UD_Vietnamese}
+#'  \item{UniversalPOS: }{Ancient_Greek, Ancient_Greek-PROIEL, Arabic, Basque, Belarusian, 
+#'  Bulgarian, Catalan, Chinese, Coptic, Croatian, Czech, Czech-CAC, Czech-CLTT, 
+#'  Danish, Dutch, Dutch-LassySmall, English, English-LinES, English-ParTUT, Estonian, 
+#'  Finnish, Finnish-FTB, French, French-ParTUT, French-Sequoia, Galician, Galician-TreeGal, 
+#'  German, Gothic, Greek, Hebrew, Hindi, Hungarian, Indonesian, Irish, Italian, 
+#'  Italian-ParTUT, Japanese, Korean, Latin, Latin-ITTB, Latin-PROIEL, Latvian, Lithuanian, 
+#'  Norwegian-Bokmaal, Norwegian-Nynorsk, Old_Church_Slavonic, Persian, Polish, Portuguese, 
+#'  Portuguese-BR, Romanian, Russian, Russian-SynTagRus, Slovak, Slovenian, Slovenian-SST, 
+#'  Spanish, Spanish-AnCora, Swedish, Swedish-LinES, Tamil, Turkish, Urdu, Vietnamese}
 #' }
 #' @param language the language which is one of the languages for the annotation shown in \code{\link{rdr_available_models}}
 #' @param annotation the type of annotation. Either one of 'MORPH', "POS' or 'UniversalPOS'
-#' @param available_models a list of available models as returned by \code{\link{rdr_available_models}}
 #' @return An object of class RDRPOSTagger which is a list with elements model (the location of the dictionary and the rules of that language),
 #' the type of annotation and java objects tagger, initialtagger, dictionary and utility.
 #' This model object can be used to tag sentences based on the specified POS tags.
 #' @seealso \code{\link{rdr_model}}
 #' @export
 #' @examples
+#' \dontrun{
 #' ## MORPH models
 #' tagger <- rdr_model(language = "Bulgarian", annotation = "MORPH")
 #' tagger <- rdr_model(language = "Czech", annotation = "MORPH")
@@ -83,76 +191,82 @@ rdr_available_models <- function(){
 #' tagger <- rdr_model(language = "Thai", annotation = "POS")
 #' tagger <- rdr_model(language = "Vietnamese", annotation = "POS")
 #' ## UniversalPOS models
-#' tagger <- rdr_model(language = "UD_Ancient_Greek", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Ancient_Greek-PROIEL", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Arabic", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Basque", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Belarusian", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Bulgarian", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Catalan", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Chinese", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Coptic", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Croatian", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Czech", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Czech-CAC", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Czech-CLTT", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Danish", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Dutch", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Dutch-LassySmall", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_English", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_English-LinES", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_English-ParTUT", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Estonian", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Finnish", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Finnish-FTB", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_French", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_French-ParTUT", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_French-Sequoia", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Galician", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Galician-TreeGal", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_German", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Gothic", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Greek", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Hebrew", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Hindi", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Hungarian", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Indonesian", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Irish", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Italian", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Italian-ParTUT", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Japanese", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Korean", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Latin", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Latin-ITTB", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Latin-PROIEL", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Latvian", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Lithuanian", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Norwegian-Bokmaal", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Norwegian-Nynorsk", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Old_Church_Slavonic", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Persian", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Polish", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Portuguese", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Portuguese-BR", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Romanian", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Russian", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Russian-SynTagRus", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Slovak", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Slovenian", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Slovenian-SST", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Spanish", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Spanish-AnCora", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Swedish", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Swedish-LinES", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Tamil", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Turkish", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Urdu", annotation = "UniversalPOS")
-#' tagger <- rdr_model(language = "UD_Vietnamese", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Ancient_Greek", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Ancient_Greek-PROIEL", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Arabic", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Basque", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Belarusian", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Bulgarian", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Catalan", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Chinese", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Coptic", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Croatian", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Czech", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Czech-CAC", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Czech-CLTT", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Danish", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Dutch", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Dutch-LassySmall", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "English", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "English-LinES", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "English-ParTUT", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Estonian", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Finnish", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Finnish-FTB", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "French", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "French-ParTUT", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "French-Sequoia", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Galician", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Galician-TreeGal", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "German", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Gothic", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Greek", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Hebrew", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Hindi", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Hungarian", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Indonesian", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Irish", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Italian", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Italian-ParTUT", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Japanese", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Korean", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Latin", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Latin-ITTB", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Latin-PROIEL", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Latvian", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Lithuanian", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Norwegian-Bokmaal", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Norwegian-Nynorsk", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Old_Church_Slavonic", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Persian", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Polish", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Portuguese", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Portuguese-BR", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Romanian", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Russian", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Russian-SynTagRus", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Slovak", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Slovenian", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Slovenian-SST", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Spanish", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Spanish-AnCora", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Swedish", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Swedish-LinES", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Tamil", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Turkish", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Urdu", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Vietnamese", annotation = "UniversalPOS")
+#' }
 rdr_model <- function(language,
-                      annotation = c("MORPH", "POS", "UniversalPOS"),
-                      available_models = rdr_available_models()){
+                      annotation = c("MORPH", "POS", "UniversalPOS")){
+  
+  
   ## Check if model exists
   annotation <- match.arg(annotation)
+  ## Unzip the model
+  rdr_unzip(language, annotation)
+    
+  available_models <- rdr_unzipped_models()
   models <- available_models[[annotation]]
   idx <- which(models$language %in% language)
   idx <- head(idx, 1)
@@ -183,7 +297,7 @@ print.RDRPOSTagger <- function(x, ...){
   cat(sprintf("RDRPOSTagger %s annotation for %s", x$annotation, x$model$language), sep = "\n")
   cat(sprintf("Based on dictionary of %s items", length(readLines(x$model$dictionary))), sep = "\n")
   cat(sprintf("Top 10 Ripple Down Rules at %s", x$model$rules), sep = "\n")
-  cat(head(readLines(x$model$rules), 10), sep = "\n")
+  cat(head(readLines(x$model$rules, encoding = "UTF-8"), 10), sep = "\n")
   cat(sprintf("..."), sep = "\n")
 }
 
@@ -205,13 +319,15 @@ print.RDRPOSTagger <- function(x, ...){
 #' tagger <- rdr_model(language = "Dutch", annotation = "MORPH")
 #' rdr_pos(tagger, x = x)
 #' 
-#' tagger <- rdr_model(language = "UD_Dutch", annotation = "UniversalPOS")
+#' tagger <- rdr_model(language = "Dutch", annotation = "UniversalPOS")
 #' rdr_pos(tagger, x = x)
 #' 
+#' \dontrun{
 #' x <- c("Oleg Borisovich Kulik is a Ukrainian-born Russian performance artist, 
 #'   sculptor, photographer and curator.")
 #' tagger <- rdr_model(language = "English", annotation = "POS")
 #' rdr_pos(tagger, x = x)
+#' }
 rdr_pos <- function(object, x, doc_id = paste("d", seq_along(x), sep=""), add_space_around_punctuations=TRUE){
   x <- trimLeadingTrailing(x)
   if(add_space_around_punctuations){
@@ -259,15 +375,16 @@ trimLeadingTrailing <- function(x){
 #' @description Add space around punctuations so that it can be used in \code{rdr_pos}
 #' and points/punctuations are not added to 1 specific word/term.
 #' @param x a character vector
+#' @param symbols a character class of regular expressions to be used to identify punctuation symbols
 #' @return the character vector \code{x} where a space is put around punctuations
 #' @export
 #' @examples
 #' x <- c("Dus godvermehoeren met pus in alle puisten, zei die schele van Van Bukburg.Nieuwe zin.", 
 #'   "  ", "", NA)
 #' rdr_add_space_around_punctuations(x)
-rdr_add_space_around_punctuations <- function(x){
+rdr_add_space_around_punctuations <- function(x, symbols = "[!,-.:;?]"){
   idx <- which(is.na(x))
-  r <- gregexpr(pattern = "[[:punct:]]", text = x)
+  r <- gregexpr(pattern = symbols, text = x)
   rm <- regmatches(x, r)
   regmatches(x, r) <- lapply(rm, FUN=function(x){
     if(length(x) == 0) return(x)
@@ -276,3 +393,4 @@ rdr_add_space_around_punctuations <- function(x){
   x[idx] <- NA
   x
 }
+

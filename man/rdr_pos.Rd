@@ -30,13 +30,15 @@ x <- c("Dus godvermehoeren met pus in alle puisten, zei die schele van Van Bukbu
 tagger <- rdr_model(language = "Dutch", annotation = "MORPH")
 rdr_pos(tagger, x = x)
 
-tagger <- rdr_model(language = "UD_Dutch", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Dutch", annotation = "UniversalPOS")
 rdr_pos(tagger, x = x)
 
+\dontrun{
 x <- c("Oleg Borisovich Kulik is a Ukrainian-born Russian performance artist, 
   sculptor, photographer and curator.")
 tagger <- rdr_model(language = "English", annotation = "POS")
 rdr_pos(tagger, x = x)
+}
 }
 \seealso{
 \code{\link{rdr_model}}

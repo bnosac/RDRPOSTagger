@@ -1,0 +1,118 @@
+---
+title: "Ripple-down rule-based Parts of Speech (POS) tagging"
+author: "Jan Wijffels"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig_caption: false
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{Ripple-down rule-based Parts of Speech (POS) tagging}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE, cache=FALSE}
+options(width = 1000)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, comment = NA)
+print.data.frame <- function(x){
+  print("here")
+  base::print.data.frame(x, row.names = FALSE)
+}
+```
+
+## General
+
+Parts of Speech (POS) tagging is the process of assigning a category (like verb/noun/adverb/...) to each word in given text. It is a crucial part in any statistical processing flow of text. This R package allows to do out-of-the-box Parts of Speech tagging for 45 languages. It does this by wrapping the Ripple Down Rules-based Part-Of-Speech Tagger (RDRPOS) available at https://github.com/datquocnguyen/RDRPOSTagger.
+
+## Types of tagging/languages
+
+The R package allows you to peform 3 types of tagging. 
+
+- **UniversalPOS** annotation where a reduced Part of Speech and globally used tagset which is consistent across languages is used to assign words with a certain label. This type of tagging is available for the following languages: **Ancient_Greek, Ancient_Greek-PROIEL, Arabic, Basque, Belarusian, Bulgarian, Catalan, Chinese, Coptic, Croatian, Czech, Czech-CAC, Czech-CLTT, Danish, Dutch, Dutch-LassySmall, English, English-LinES, English-ParTUT, Estonian, Finnish, Finnish-FTB, French, French-ParTUT, French-Sequoia, Galician, Galician-TreeGal, German, Gothic, Greek, Hebrew, Hindi, Hungarian, Indonesian, Irish, Italian, Italian-ParTUT, Japanese, Korean, Latin, Latin-ITTB, Latin-PROIEL, Latvian, Lithuanian, Norwegian-Bokmaal, Norwegian-Nynorsk, Old_Church_Slavonic, Persian, Polish, Portuguese, Portuguese-BR, Romanian, Russian, Russian-SynTagRus, Slovak, Slovenian, Slovenian-SST, Spanish, Spanish-AnCora, Swedish, Swedish-LinES, Tamil, Turkish, Urdu, Vietnamese**. 
+
+- **POS** for doing Parts of Speech annotation based on an extended language/treebank-specific POS tagset. for This type of tagging is available for the following languages: **English, French, German, Hindi, Italian, Thai, Vietnamese**
+
+- **MORPH** with very detailed morphological annotation. This type of tagging is available for the following languages: **Bulgarian, Czech, Dutch, French, German, Portuguese, Spanish, Swedish**
+
+```{r}
+library(RDRPOSTagger)
+rdr_available_models()
+```
+
+## Examples
+
+If you want to tag text based on one of each of these taggers, you need to proceed as follows. First you create an object of class `RDRPOSTagger` by specifying the language and the type of tagging requested as shown previously in `rdr_available_models()`. This will basically extract the rules and the dictionary from the specific file in the Models folder of this package.
+
+```{r}
+library(RDRPOSTagger)
+tagger <- rdr_model(language = "Dutch", annotation = "UniversalPOS")
+tagger
+```
+
+The model contains the rules which were found during training on the corpus of the language. If you need more detail on how the corpus was collected and the specific treebank, go to http://universaldependencies.org where you can find details on the corpus.
+
+If you just want to use the models to tag text you have to provide a vector of text and use `rdr_pos` to tag your text. The output of this is always a data.frame with 1 line per token. It contains fields doc_id, token_id, token and pos with the POS tagged label for that word or token. 
+
+If you want to find out the meaning of the different POS tags, visit http://universaldependencies.org.
+
+```{r}
+x <- c("Dus godvermehoeren met pus in alle puisten, zei die schele van Van Bukburg.", 
+ "Er was toen dat liedje van tietenkonttieten kont tieten kontkontkont",
+ "  ", "", NA)
+rdr_pos(tagger, x = x)
+```
+
+```{r}
+## Another example using a MORPH tagger 
+tagger <- rdr_model(language = "Dutch", annotation = "MORPH")
+rdr_pos(tagger, x = x)
+```
+
+Mark that `rdr_pos` requires to have spaces around punctuation symbols, which is done by default when you run the function. If you don't do this, the punctuation symbols and the word will be considered as 1 token which is probably not what you want.
+
+
+```{r}
+## Another example using a POS tagger 
+tagger <- rdr_model(language = "French", annotation = "POS")
+rdr_pos(tagger, 
+        x = c("Il pleure dans mon coeur comme il pleut sur la ville."), 
+        add_space_around_punctuations = FALSE)
+```
+
+You can also provide a vector of document id's if you want to use this later on to link back to your database of documents.
+
+```{r}
+tagger <- rdr_model(language = "English", annotation = "POS")
+rdr_pos(tagger, 
+        x = c("We do not have health care, that is our idea of a state. I love that!", 
+              "We also call that freedom."),
+        doc_id = c("identifier_abc", "id_123"))
+```
+
+
+## Details
+
+### Background
+
+More information about the model and the tagging can be found at https://github.com/datquocnguyen/RDRPOSTagger
+
+The general architecture and experimental results of RDRPOSTagger can be found in the following papers:
+
+- Dat Quoc Nguyen, Dai Quoc Nguyen, Dang Duc Pham and Son Bao Pham. [RDRPOSTagger: A Ripple Down Rules-based Part-Of-Speech Tagger](http://www.aclweb.org/anthology/E14-2005). In *Proceedings of the Demonstrations at the 14th Conference of the European Chapter of the Association for Computational Linguistics*, EACL 2014, pp. 17-20, 2014. [[.PDF]](http://www.aclweb.org/anthology/E14-2005) [[.bib]](http://www.aclweb.org/anthology/E14-2005.bib)
+
+- Dat Quoc Nguyen, Dai Quoc Nguyen, Dang Duc Pham and Son Bao Pham. [A Robust Transformation-Based Learning Approach Using Ripple Down Rules for Part-Of-Speech Tagging](http://content.iospress.com/articles/ai-communications/aic698). *AI Communications* (AICom), vol. 29, no. 3, pp. 409-422, 2016. [[.PDF]](http://arxiv.org/pdf/1412.4021.pdf) [[.bib]](http://rdrpostagger.sourceforge.net/AICom.bib)
+
+### License
+
+The package is licensed under the GPL-3 license as described at http://www.gnu.org/licenses/gpl-3.0.html.
+
+
+## Support in text mining
+
+Need support in text mining. 
+Contact BNOSAC: http://www.bnosac.be

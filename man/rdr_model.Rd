@@ -4,15 +4,12 @@
 \alias{rdr_model}
 \title{Set up a Ripple Down Rules-based Part-Of-Speech Tagger for tagging sentences}
 \usage{
-rdr_model(language, annotation = c("MORPH", "POS", "UniversalPOS"),
-  available_models = rdr_available_models())
+rdr_model(language, annotation = c("MORPH", "POS", "UniversalPOS"))
 }
 \arguments{
 \item{language}{the language which is one of the languages for the annotation shown in \code{\link{rdr_available_models}}}
 
 \item{annotation}{the type of annotation. Either one of 'MORPH', "POS' or 'UniversalPOS'}
-
-\item{available_models}{a list of available models as returned by \code{\link{rdr_available_models}}}
 }
 \value{
 An object of class RDRPOSTagger which is a list with elements model (the location of the dictionary and the rules of that language),
@@ -25,18 +22,19 @@ Possible languages are:
 \itemize{
  \item{MORPH: }{Bulgarian, Czech, Dutch, French, German, Portuguese, Spanish, Swedish}
  \item{POS: }{English, French, German, Hindi, Italian, Thai, Vietnamese}
- \item{UniversalPOS: }{UD_Ancient_Greek, UD_Ancient_Greek-PROIEL, UD_Arabic, UD_Basque, UD_Belarusian, 
- UD_Bulgarian, UD_Catalan, UD_Chinese, UD_Coptic, UD_Croatian, UD_Czech, UD_Czech-CAC, UD_Czech-CLTT, 
- UD_Danish, UD_Dutch, UD_Dutch-LassySmall, UD_English, UD_English-LinES, UD_English-ParTUT, UD_Estonian, 
- UD_Finnish, UD_Finnish-FTB, UD_French, UD_French-ParTUT, UD_French-Sequoia, UD_Galician, UD_Galician-TreeGal, 
- UD_German, UD_Gothic, UD_Greek, UD_Hebrew, UD_Hindi, UD_Hungarian, UD_Indonesian, UD_Irish, UD_Italian, 
- UD_Italian-ParTUT, UD_Japanese, UD_Korean, UD_Latin, UD_Latin-ITTB, UD_Latin-PROIEL, UD_Latvian, UD_Lithuanian, 
- UD_Norwegian-Bokmaal, UD_Norwegian-Nynorsk, UD_Old_Church_Slavonic, UD_Persian, UD_Polish, UD_Portuguese, 
- UD_Portuguese-BR, UD_Romanian, UD_Russian, UD_Russian-SynTagRus, UD_Slovak, UD_Slovenian, UD_Slovenian-SST, 
- UD_Spanish, UD_Spanish-AnCora, UD_Swedish, UD_Swedish-LinES, UD_Tamil, UD_Turkish, UD_Urdu, UD_Vietnamese}
+ \item{UniversalPOS: }{Ancient_Greek, Ancient_Greek-PROIEL, Arabic, Basque, Belarusian, 
+ Bulgarian, Catalan, Chinese, Coptic, Croatian, Czech, Czech-CAC, Czech-CLTT, 
+ Danish, Dutch, Dutch-LassySmall, English, English-LinES, English-ParTUT, Estonian, 
+ Finnish, Finnish-FTB, French, French-ParTUT, French-Sequoia, Galician, Galician-TreeGal, 
+ German, Gothic, Greek, Hebrew, Hindi, Hungarian, Indonesian, Irish, Italian, 
+ Italian-ParTUT, Japanese, Korean, Latin, Latin-ITTB, Latin-PROIEL, Latvian, Lithuanian, 
+ Norwegian-Bokmaal, Norwegian-Nynorsk, Old_Church_Slavonic, Persian, Polish, Portuguese, 
+ Portuguese-BR, Romanian, Russian, Russian-SynTagRus, Slovak, Slovenian, Slovenian-SST, 
+ Spanish, Spanish-AnCora, Swedish, Swedish-LinES, Tamil, Turkish, Urdu, Vietnamese}
 }
 }
 \examples{
+\dontrun{
 ## MORPH models
 tagger <- rdr_model(language = "Bulgarian", annotation = "MORPH")
 tagger <- rdr_model(language = "Czech", annotation = "MORPH")
@@ -55,71 +53,72 @@ tagger <- rdr_model(language = "Italian", annotation = "POS")
 tagger <- rdr_model(language = "Thai", annotation = "POS")
 tagger <- rdr_model(language = "Vietnamese", annotation = "POS")
 ## UniversalPOS models
-tagger <- rdr_model(language = "UD_Ancient_Greek", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Ancient_Greek-PROIEL", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Arabic", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Basque", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Belarusian", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Bulgarian", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Catalan", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Chinese", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Coptic", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Croatian", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Czech", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Czech-CAC", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Czech-CLTT", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Danish", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Dutch", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Dutch-LassySmall", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_English", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_English-LinES", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_English-ParTUT", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Estonian", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Finnish", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Finnish-FTB", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_French", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_French-ParTUT", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_French-Sequoia", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Galician", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Galician-TreeGal", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_German", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Gothic", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Greek", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Hebrew", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Hindi", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Hungarian", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Indonesian", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Irish", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Italian", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Italian-ParTUT", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Japanese", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Korean", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Latin", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Latin-ITTB", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Latin-PROIEL", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Latvian", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Lithuanian", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Norwegian-Bokmaal", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Norwegian-Nynorsk", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Old_Church_Slavonic", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Persian", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Polish", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Portuguese", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Portuguese-BR", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Romanian", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Russian", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Russian-SynTagRus", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Slovak", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Slovenian", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Slovenian-SST", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Spanish", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Spanish-AnCora", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Swedish", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Swedish-LinES", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Tamil", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Turkish", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Urdu", annotation = "UniversalPOS")
-tagger <- rdr_model(language = "UD_Vietnamese", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Ancient_Greek", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Ancient_Greek-PROIEL", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Arabic", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Basque", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Belarusian", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Bulgarian", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Catalan", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Chinese", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Coptic", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Croatian", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Czech", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Czech-CAC", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Czech-CLTT", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Danish", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Dutch", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Dutch-LassySmall", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "English", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "English-LinES", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "English-ParTUT", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Estonian", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Finnish", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Finnish-FTB", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "French", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "French-ParTUT", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "French-Sequoia", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Galician", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Galician-TreeGal", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "German", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Gothic", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Greek", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Hebrew", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Hindi", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Hungarian", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Indonesian", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Irish", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Italian", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Italian-ParTUT", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Japanese", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Korean", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Latin", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Latin-ITTB", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Latin-PROIEL", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Latvian", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Lithuanian", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Norwegian-Bokmaal", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Norwegian-Nynorsk", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Old_Church_Slavonic", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Persian", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Polish", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Portuguese", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Portuguese-BR", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Romanian", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Russian", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Russian-SynTagRus", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Slovak", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Slovenian", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Slovenian-SST", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Spanish", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Spanish-AnCora", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Swedish", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Swedish-LinES", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Tamil", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Turkish", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Urdu", annotation = "UniversalPOS")
+tagger <- rdr_model(language = "Vietnamese", annotation = "UniversalPOS")
+}
 }
 \seealso{
 \code{\link{rdr_model}}
