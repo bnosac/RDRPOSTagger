@@ -1,7 +1,7 @@
 Package: RDRPOSTagger
 Type: Package
-Title: Parts of Speech Tagging based on the Ripple Down Rules-based Part-Of-Speech Tagger
-Description: Parts of Speech tagging and morphological tagging based on the Ripple Down Rules-based Part-Of-Speech Tagger (RDRPOS) available at <https://github.com/datquocnguyen/RDRPOSTagger>. RDRPOSTagger supports pre-trained tagging models for 45 languages.
+Title: Parts of Speech Tagging Based on the Ripple Down Rules-Based Part-of-Speech Tagger
+Description: Parts of Speech tagging and morphological tagging based on the Ripple Down Rules-based Part-Of-Speech Tagger available at <https://github.com/datquocnguyen/RDRPOSTagger>. The package includes ready-made tagging models trained on 45 languages, namely for Ancient Greek, Arabic, Basque, Belarusian, Bulgarian, Catalan, Chinese, Coptic, Croatian, Czech, Danish, Dutch, English, Estonian, Finnish, French, Galician, German, Gothic, Greek, Hebrew, Hindi, Hungarian, Indonesian, Irish, Italian, Japanese, Korean, Latin, Latvian, Lithuanian, Norwegian, Old Church Slavonic, Persian, Polish, Portuguese, Romanian, Russian, Slovak, Slovenian, Spanish, Swedish, Tamil, Thai, Turkish, Urdu and Vietnamese.
 Version: 1.1
 Author: c(person("Jan", "Wijffels", role = c("aut", "cre", "cph"), email = "jwijffels@bnosac.be"), person("BNOSAC", role = "cph"), person("Dat Quoc Nguyen", role = "cph"), person("Dai Quoc Nguyen", role = "cph"), person("Dang Duc Pham", role = "cph"), person("Son Bao Pham", role = "cph"))
 Maintainer: Jan Wijffels <jwijffels@bnosac.be>
