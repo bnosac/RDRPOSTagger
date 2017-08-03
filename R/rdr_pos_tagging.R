@@ -169,7 +169,7 @@ print.rdr_models <- function(x, ...){
 #' @return An object of class RDRPOSTagger which is a list with elements model (the location of the dictionary and the rules of that language),
 #' the type of annotation and java objects tagger, initialtagger, dictionary and utility.
 #' This model object can be used to tag sentences based on the specified POS tags.
-#' @seealso \code{\link{rdr_model}}
+#' @seealso \code{\link{rdr_pos}}
 #' @export
 #' @examples
 #' \dontrun{
@@ -305,11 +305,12 @@ print.RDRPOSTagger <- function(x, ...){
 #' @title Part-Of-Speech Tagging for tagging sentences based on Ripple Down Rules
 #' @description Part-Of-Speech Tagging for tagging sentences based on Ripple Down Rules
 #' @param object And object of class RDRPOSTagger as returned by \code{\link{rdr_model}}
-#' @param x a character vector in UTF-8 encoding where each element of the character vector contains only 1 sentence which you like to tag.
+#' @param x a character vector in UTF-8 encoding where each element of the character vector contains text which you like to tag.
 #' @param doc_id an identifier of a document with the same length as \code{x}.
 #' @param add_space_around_punctuations logical indicating to add a space around punctuations before doing the RDR tagging. Defaults
-#' to TRUE as the RDRPOStagger requires this.
-#' @return a data frame with fields doc_id, token_id, token, pos where the pos field is the Parts of Speech tag 
+#' to \code{TRUE} as the RDRPOStagger requires this.
+#' @return a data frame with fields doc_id, token_id, token, pos where the pos field is the Parts of Speech tag.
+#' If you want to find out the meaning of the different POS tags, visit http://universaldependencies.org.
 #' @seealso \code{\link{rdr_model}}
 #' @export
 #' @examples

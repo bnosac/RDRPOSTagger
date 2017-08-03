@@ -8,7 +8,7 @@ The R package allows you to perform 3 types of tagging.
 - **POS** for doing Parts of Speech annotation based on an extended language/treebank-specific POS tagset. for This type of tagging is available for the following languages: **English, French, German, Hindi, Italian, Thai, Vietnamese**
 - **MORPH** with very detailed morphological annotation. This type of tagging is available for the following languages: **Bulgarian, Czech, Dutch, French, German, Portuguese, Spanish, Swedish**
 
-This is based on corpusses collected and made available at http://universaldependencies.org.
+This is based on corpora collected and made available at http://universaldependencies.org.
 
 ## Examples on Parts of Speech tagging
 
@@ -92,6 +92,13 @@ Or with devtools
 ```
 devtools::install_github("bnosac/RDRPOSTagger", build_vignettes = TRUE)
 ```
+
+More details in the package documentation and package vignette
+
+```
+vignette("rdrpostagger-overview", package = "RDRPOSTagger")
+```
+
 
 ## License
 

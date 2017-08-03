@@ -121,5 +121,5 @@ tagger <- rdr_model(language = "Vietnamese", annotation = "UniversalPOS")
 }
 }
 \seealso{
-\code{\link{rdr_model}}
+\code{\link{rdr_pos}}
 }
